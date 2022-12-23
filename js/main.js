@@ -138,12 +138,13 @@ function addFlashAnimation() {
 function share(){
     let slip = JSON.parse(window.localStorage.getItem('slip'));
     if (navigator.canShare) {
+        console.log(window.location.href)
         navigator.share({
             title: 'Advice #'+slip.id,
-            text: '\'slip.advice\'',
+            text: '\''+slip.advice+'\'',
             url: window.location.href.includes('?id=')
                 ? window.location.href
-                : window.location.href +'?id='+slip.id,
+                : window.location.href.substring(0,window.location.href.length-1) +'?id='+slip.id,
         });
     }
 }
