@@ -158,7 +158,7 @@ function share(){
             url: window.location.href.includes('?id=')
                 ? window.location.href
                 : window.location.href.substring(0,window.location.href.length-1) +'?id='+slip.id,
-            text: '"'+slip.advice+'"\n',
+            text: 'Advice #'+slip.id+'\n"'+slip.advice+'"\n',
         });
     }
 }
