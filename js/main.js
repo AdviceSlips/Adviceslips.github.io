@@ -54,14 +54,23 @@ function setSwiperCursor(left, top) {
 }
 
 function load() {
+    let id = new URL(window.location.href).searchParams.get('id');
+    if(id){
+        window.localStorage.setItem('viaLink', true);
+    }
     $('#heart').html(deviceType() === 'desktop' ? '💗' : '❤');
     loadRandomAdvice();
 }
 
 function loadRandomAdvice() {
-    let id = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')+1);
-    console.log(id)
-    let url = 'https://api.adviceslip.com/advice'+(`${id !== '' ? '/'+id : ''}`);
+    let id = new URL(window.location.href).searchParams.get('id');
+    let url = 'https://api.adviceslip.com/advice';
+    if(id){
+        window.localStorage.setItem('viaLink', true);
+        url+= `/${id}`
+    } else {
+        window.localStorage.setItem('viaLink', false);
+    }
     $.get(url)
         .done(function (data) {
             let slip = JSON.parse(data).slip;
@@ -70,14 +79,9 @@ function loadRandomAdvice() {
                 fillSlipData(slip)
             }, 500)
         })
-    if(id !== ''){
-        history.pushState({}, null, '');
-    }
 }
 
 function fillSlipData(slip) {
-    $('#share').attr('data-slipid',slip.id);
-
     $('#advice-title').html(`Advice <small class="id">#</small> ${slip.id}`);
     $('#advice').html(`${slip.advice}`);
     $('#advice-author').html(`${firstNames[random(20)]}  ${lastNames[random(6)]} &copy;`);
@@ -105,6 +109,10 @@ function random(max) {
 let timer = undefined;
 
 function addFlashAnimation() {
+    if(window.localStorage.getItem('viaLink') === 'true'){
+        window.history.pushState("", "Title", "/");
+        window.localStorage.setItem('viaLink',false);
+    }
     if (timer) {
         timer = undefined;
     }
@@ -118,10 +126,12 @@ function addFlashAnimation() {
 
     $('#randomize').toggleClass("flash");
     $('#heartParent').toggleClass("spin");
+    $('#share').toggleClass("opacity-0");
     loadRandomAdvice();
     timer = setTimeout(() => {
         $('#randomize').toggleClass("flash");
         $('#heartParent').toggleClass("spin");
+        $('#share').toggleClass("opacity-0");
     }, 1000)
 }
 
@@ -130,8 +140,10 @@ function share(){
     if (navigator.canShare) {
         navigator.share({
             title: 'Advice #'+slip.id,
-            text: slip.advice,
-            url: window.location.href+'/'+slip.id,
+            text: '\'slip.advice\'',
+            url: window.location.href.includes('?id=')
+                ? window.location.href
+                : window.location.href +'?id='+slip.id,
         });
     }
 }
