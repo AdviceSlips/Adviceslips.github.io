@@ -13,7 +13,7 @@ function swipe(e) {
         window.localStorage.setItem('isTouched', 'true');
         window.localStorage.setItem('clientStartX', e.touches ? e.touches[0].clientX : e.clientX);
         setSwiperCursor((e.touches ? e.touches[0].clientX : e.clientX), (e.touches ? e.touches[0].clientY : e.clientY));
-        $('body').css('cursor','none');
+        $('body').css('cursor', 'none');
     }
     if (type === 'touchend' || type === 'mouseup') {
         window.localStorage.setItem('isTouched', 'false');
@@ -24,7 +24,7 @@ function swipe(e) {
         }
         $('.dot').css('background', 'rgba(0, 0, 0,.7)');
         $('.dot').css('box-shadow', '0 0 4px 8px rgba(0,0,0,.2),0 0 4px 10px rgba(0,0,0,.2),0 0 1px 2px rgba(0,0,0,1)');
-        $('body').css('cursor','pointer');
+        $('body').css('cursor', 'pointer');
         setSwiperCursor(-100, -100);
     }
 
@@ -39,7 +39,7 @@ function swipe(e) {
             $('.dot').css('background', 'rgba(194, 255, 28,.6)');
             $('.dot').css('box-shadow', '0 0 4px 8px rgba(194, 255, 28,.2),0 0 4px 10px rgba(194, 255, 28,.2),0 0 1px 2px rgba(70, 70, 70,1)');
         }
-        if(clientX < ($(document).width() * 0.25)){
+        if (clientX < ($(document).width() * 0.25)) {
             $('.swipe-indicator').toggleClass('swipe-active');
             window.localStorage.setItem('rightSwipe', 'false');
             $('.dot').css('background', 'rgba(0, 0, 0,.7)');
@@ -48,7 +48,7 @@ function swipe(e) {
     }
 }
 
-function setSwiperCursor(left, top){
+function setSwiperCursor(left, top) {
     $('.dot-start').css('left', left);
     $('.dot-start').css('top', top);
 }
@@ -59,21 +59,29 @@ function load() {
 }
 
 function loadRandomAdvice() {
-    let data = null;
-    $.get("https://api.adviceslip.com/advice")
+    let id = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')+1);
+    console.log(id)
+    let url = 'https://api.adviceslip.com/advice'+(`${id !== '' ? '/'+id : ''}`);
+    $.get(url)
         .done(function (data) {
             let slip = JSON.parse(data).slip;
-            setTimeout(()=> {
+            window.localStorage.setItem('slip', JSON.stringify(slip));
+            setTimeout(() => {
                 fillSlipData(slip)
             }, 500)
         })
-    return data;
+    if(id !== ''){
+        history.pushState({}, null, '');
+    }
 }
 
 function fillSlipData(slip) {
+    $('#share').attr('data-slipid',slip.id);
+
     $('#advice-title').html(`Advice <small class="id">#</small> ${slip.id}`);
     $('#advice').html(`${slip.advice}`);
     $('#advice-author').html(`${firstNames[random(20)]}  ${lastNames[random(6)]} &copy;`);
+    $('#heart').toggleClass('spin');
 }
 
 const firstNames = [
@@ -109,19 +117,30 @@ function addFlashAnimation() {
     $('#advice-author').html('<span class="skeleton mb-1">------------------</span>')
 
     $('#randomize').toggleClass("flash");
+    $('#heartParent').toggleClass("spin");
     loadRandomAdvice();
     timer = setTimeout(() => {
         $('#randomize').toggleClass("flash");
+        $('#heartParent').toggleClass("spin");
     }, 1000)
 }
 
+function share(){
+    let slip = JSON.parse(window.localStorage.getItem('slip'));
+    if (navigator.canShare) {
+        navigator.share({
+            title: 'Advice #'+slip.id,
+            text: slip.advice,
+            url: window.location.href+'/'+slip.id,
+        });
+    }
+}
 
 const deviceType = () => {
     const ua = navigator.userAgent;
     if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
         return "tablet";
-    }
-    else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+    } else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
         return "mobile";
     }
     return "desktop";

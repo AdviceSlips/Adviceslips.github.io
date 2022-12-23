@@ -1,10 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+@font-face{
+    font-family: "comicSans";
+    src: url("../fonts/comic.ttf") format("truetype");
+}
 
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Averia Libre', cursive !important;
-    font-style: italic;
+    font-family: 'comicSans', cursive !important;
 }
 
 body {
@@ -49,6 +51,14 @@ body {
     animation-duration: 1s;
     animation-iteration-count: 1;
     animation-timing-function: ease;
+    animation-fill-mode: forwards;
+}
+
+.spin {
+    animation-name: slipSpin;
+    animation-duration: 400ms;
+    animation-iteration-count: 2;
+    animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
 }
 
@@ -150,8 +160,10 @@ a:hover {
 }
 
 @keyframes slipSpin {
-    to {
-        transform: rotateX(360deg);
+    from{
+        transform: rotateY(0);
+    }to {
+        transform: rotateY(360deg);
     }
 }
 
