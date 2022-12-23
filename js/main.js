@@ -18,9 +18,11 @@ function swipe(e) {
     if (type === 'touchend' || type === 'mouseup') {
         window.localStorage.setItem('isTouched', 'false');
         let rightSwap = window.localStorage.getItem('rightSwipe') === 'true';
-        if (rightSwap) {
-            addFlashAnimation()
+        let leftSwap = window.localStorage.getItem('leftSwipe') === 'true';
+        if (rightSwap || leftSwap) {
+            addFlashAnimation(rightSwap, leftSwap)
             window.localStorage.setItem('rightSwipe', 'false');
+            window.localStorage.setItem('leftSwipe', 'false');
         }
         $('.dot').css('background', 'rgba(0, 0, 0,.7)');
         $('.dot').css('box-shadow', '0 0 4px 8px rgba(0,0,0,.2),0 0 4px 10px rgba(0,0,0,.2),0 0 1px 2px rgba(0,0,0,1)');
@@ -33,14 +35,16 @@ function swipe(e) {
         setSwiperCursor((e.touches ? e.touches[0].clientX : e.clientX), (e.touches ? e.touches[0].clientY : e.clientY));
         let clientStartX = window.localStorage.getItem('clientStartX');
         let clientX = (e.touches ? e.touches[0].clientX : e.clientX) - parseInt(clientStartX);
-        if (clientX > ($(document).width() * 0.15)) {
-            $('.swipe-indicator').toggleClass('swipe-active');
-            window.localStorage.setItem('rightSwipe', 'true');
+        if (Math.abs(clientX) > ($(document).width() * 0.15)) {
+            if(clientX>0) {
+                window.localStorage.setItem('rightSwipe', 'true');
+            } else {
+                window.localStorage.setItem('leftSwipe', 'true');
+            }
             $('.dot').css('background', 'rgba(194, 255, 28,.6)');
             $('.dot').css('box-shadow', '0 0 4px 8px rgba(194, 255, 28,.2),0 0 4px 10px rgba(194, 255, 28,.2),0 0 1px 2px rgba(70, 70, 70,1)');
-        }
-        if (clientX < ($(document).width() * 0.25)) {
-            $('.swipe-indicator').toggleClass('swipe-active');
+        } else {
+            window.localStorage.setItem('leftSwipe', 'false');
             window.localStorage.setItem('rightSwipe', 'false');
             $('.dot').css('background', 'rgba(0, 0, 0,.7)');
             $('.dot').css('box-shadow', '0 0 4px 8px rgba(0,0,0,.2),0 0 4px 10px rgba(0,0,0,.2),0 0 1px 2px rgba(0,0,0,1)');
@@ -108,7 +112,7 @@ function random(max) {
 
 let timer = undefined;
 
-function addFlashAnimation() {
+function addFlashAnimation(rightSwipe, leftSwipe) {
     if(window.localStorage.getItem('viaLink') === 'true'){
         window.history.pushState("", "Title", "/");
         window.localStorage.setItem('viaLink',false);
@@ -124,12 +128,22 @@ function addFlashAnimation() {
     $('#advice-title').html('<span class="skeleton mb-1">------------------</span>');
     $('#advice-author').html('<span class="skeleton mb-1">------------------</span>')
 
-    $('#randomize').toggleClass("flash");
+    if(rightSwipe){
+        $('#randomize').toggleClass("flashR");
+    }
+    else if(leftSwipe){
+        $('#randomize').toggleClass("flashL");
+    }
     $('#heartParent').toggleClass("spin");
     $('#share').toggleClass("opacity-0");
     loadRandomAdvice();
     timer = setTimeout(() => {
-        $('#randomize').toggleClass("flash");
+        if(rightSwipe){
+            $('#randomize').toggleClass("flashR");
+        }
+        else if(leftSwipe){
+            $('#randomize').toggleClass("flashL");
+        }
         $('#heartParent').toggleClass("spin");
         $('#share').toggleClass("opacity-0");
     }, 1000)
@@ -137,17 +151,36 @@ function addFlashAnimation() {
 
 function share(){
     let slip = JSON.parse(window.localStorage.getItem('slip'));
+    // takeScreenshot()
     if (navigator.canShare) {
-        console.log(window.location.href)
         navigator.share({
             title: 'Advice #'+slip.id,
-            text: '\''+slip.advice+'\'',
             url: window.location.href.includes('?id=')
                 ? window.location.href
                 : window.location.href.substring(0,window.location.href.length-1) +'?id='+slip.id,
+            text: '"'+slip.advice+'"\n',
         });
     }
 }
+
+function takeScreenshot() {
+
+    let footer = $('.footer');
+
+    html2canvas(document.body).then((canvas) => {
+        const base64image = canvas.toDataURL("image/png");
+
+        let w = window.open('', '_blank')
+        let img = document.createElement('image');
+        img.css('background', 'url('+base64image+')');
+        img.css('width',canvas.width);
+        img.css('height',canvas.height);
+        w.body.html(img)
+
+    });
+    $('#randomize').append(footer);
+}
+
 
 const deviceType = () => {
     const ua = navigator.userAgent;

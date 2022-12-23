@@ -11,11 +11,8 @@
     <title>Advice Slip</title>
 </head>
 <body>
-<div class="container overflow-hidden user-select-none">
+<div id="screenContainer" class="container overflow-hidden user-select-none">
     <div class="dot dot-start"></div>
-
-    <div class="transparent-card">
-    </div>
     <div class="card">
         <div class="card-title p-3 pb-2 border-bottom user-select-none">
             <span id="advice-title" class="ms-4"><span
@@ -41,9 +38,8 @@
         </div>
     </div>
     <div id="randomize" class="randomize mt-3 text-white" onclick="addFlashAnimation()">
-        <span>ran</span><span>dom</span> <span>slip</span> →
+        ← <span>ran</span><span>dom</span> <span>slip</span> →
     </div>
-
     <div class="footer text-muted">
         <span class="fst-normal">Designed by <small>Mirix</small></span>
         <ul>
@@ -55,6 +51,8 @@
 </div>
 <script src="https://unpkg.com/feather-icons"></script>
 <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+<script type="text/javascript"
+        src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script src="./js/main.js"></script>
 <script>
     feather.replace()
