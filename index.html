@@ -5,7 +5,9 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/bootstrap.css">
     <link rel="stylesheet" href="./css/style.css">
     <title>Advice Slip</title>
@@ -13,18 +15,17 @@
 <body>
 <div class="container overflow-hidden user-select-none">
     <div class="dot dot-start"></div>
-<!--    <div class="dot dot-end"></div>-->
 
     <div class="transparent-card">
     </div>
     <div class="card">
         <div class="card-title p-3 pb-2 border-bottom user-select-none">
-            <span id="advice-title" class="transition-opacity"><span
+            <span id="advice-title" class="fw-semibold"><span
                     class="skeleton mb-1">------------------</span></span>
-            <span class="position-absolute end-0 top-0 p-3 floating"><small>💗</small></span>
+            <span class="position-absolute end-0 top-0 p-3 floating"><small id="heart"></small></span>
         </div>
         <div class="card-body pb-1">
-                <span id="advice" class="transition-opacity">
+                <span id="advice">
                     <span class="skeleton mb-1">--------------------------------------</span><br>
                     <span class="skeleton mb-1">------------------------</span><br>
                     <span class="skeleton mb-1">--------------------------------</span><br>
@@ -32,7 +33,7 @@
                     <span class="skeleton mb-1">---------------------------------</span><br>
                 </span>
             <br><br>
-            <span id="advice-author" class="float-end transition-opacity"><span
+            <span id="advice-author" class="float-end"><span
                     class="skeleton mb-1">------------------</span></span>
         </div>
     </div>
@@ -41,7 +42,7 @@
     </div>
 
     <div class="footer text-muted">
-        <span>Designed by <small>Mirix</small></span>
+        <span class="fst-normal">Designed by <small>Mirix</small></span>
         <ul>
             <li><a href="https://github.com/M1rix" target="_blank"><i data-feather="github"></i></a></li>
             <li><a href="https://instagram.com/m_irix" target="_blank"><i data-feather="instagram"></i></a></li>

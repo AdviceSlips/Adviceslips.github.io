@@ -1,18 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
 * {
     margin: 0;
     padding: 0;
-    font-family: "Comic Sans MS", "Arial Black", sans-serif !important;
+    font-family: 'Averia Libre', cursive !important;
+    font-style: italic;
 }
 
 body {
     width: 100vw;
-    background: rgb(50,55,65);
+    background: rgb(50, 55, 65);
     height: 100vh;
     cursor: pointer;
 }
 
-.container{
-    overflow:hidden;
+.container {
+    overflow: hidden;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -20,15 +23,19 @@ body {
     flex-direction: column;
 }
 
-.randomize{
+.randomize {
     transition: all 400ms ease;
 }
 
-.randomize:hover{
+.randomize:hover {
     text-shadow: 1px -1px #fff3cd;
 }
 
-.transition-shadow{
+#heart {
+    font-style: normal;
+}
+
+.transition-shadow {
     transition: 200ms ease-in-out;
 }
 
@@ -37,7 +44,7 @@ body {
     animation: floatingHeart 2s ease-in-out infinite alternate;
 }
 
-.flash{
+.flash {
     animation-name: flash;
     animation-duration: 1s;
     animation-iteration-count: 1;
@@ -45,16 +52,16 @@ body {
     animation-fill-mode: forwards;
 }
 
-.card{
+.card {
     border: 1px solid black;
     width: 300px;
     min-height: 300px;
-    box-shadow: 160px -80px 40px 5px#fdfdfe, -160px -80px 40px 5px#fdfdfe;
+    box-shadow: 160px -80px 40px 5px #fdfdfe, -160px -80px 40px 5px #fdfdfe;
     transition: 400ms ease;
     animation: floating 2s infinite linear alternate;
 }
 
-.card-body{
+.card-body {
     padding-bottom: 20px;
 }
 
@@ -73,11 +80,11 @@ body {
     border-bottom-right-radius: 7px;
 }
 
-.id{
+.id {
     text-shadow: 1px -2px #fff3cd;
 }
 
-.footer{
+.footer {
     position: absolute;
     bottom: 15px;
 }
@@ -95,50 +102,46 @@ body {
     margin-left: 10px;
 }
 
-.footer ul li:nth-child(1){
+.footer ul li:nth-child(1) {
     margin-left: 0 !important;
 }
 
-.footer ul li img{
+.footer ul li img {
     fill: #fdfdfe;
 }
 
 .footer span small,
-a{
+a {
     color: #9aa5ad;
     text-decoration: none;
     transition: 300ms ease;
 }
 
-a:hover{
+a:hover {
     color: #e2e6ec;
 }
 
-.transition-opacity{
-    transition: opacity 300ms ease-out;
-}
-
 /* swipe dots */
-.dot{
+.dot {
     position: absolute;
     width: 1rem;
     height: 1rem;
     left: -100px;
     top: -100px;
     z-index: 100;
-    background: rgba(0,0,0,.7);
+    background: rgba(0, 0, 0, .7);
     border-radius: 50%;
-    box-shadow: 0 0 4px 8px rgba(0,0,0,.2),0 0 4px 10px rgba(0,0,0,.2),0 0 1px 2px rgba(0,0,0,7);
+    box-shadow: 0 0 4px 8px rgba(0, 0, 0, .2), 0 0 4px 10px rgba(0, 0, 0, .2), 0 0 1px 2px rgba(0, 0, 0, 7);
 }
 
 @-webkit-keyframes flash {
     0% {
         transform: translateX(0px);
     }
-    50%{
+    50% {
         transform: translateX(1000px);
     }
-    51%{
+    51% {
         transform: translateX(-1000px);
     }
     100% {
@@ -147,26 +150,26 @@ a:hover{
 }
 
 @keyframes slipSpin {
-    to{
+    to {
         transform: rotateX(360deg);
     }
 }
 
 @keyframes floating {
-    from{
-        box-shadow: 160px -80px 40px 5px#fdfdfe, -160px -80px 40px 5px#fdfdfe;
+    from {
+        box-shadow: 160px -80px 40px 5px #fdfdfe, -160px -80px 40px 5px #fdfdfe;
     }
     to {
-        box-shadow: 160px -70px 40px 5px#fdfdfe, -160px -50px 40px 5px#fdfdfe;
+        box-shadow: 160px -70px 40px 5px #fdfdfe, -160px -50px 40px 5px #fdfdfe;
     }
 }
 
 @keyframes floatingHeart {
-    0%{
+    0% {
         transform: translateY(0);
     }
-    50%{
-     transform: translateY(-3px);
+    50% {
+        transform: translateY(-3px);
     }
     100% {
         transform: translateY(3px);
@@ -174,8 +177,7 @@ a:hover{
 }
 
 
-
-.skeleton{
+.skeleton {
     position: relative;
 }
 
